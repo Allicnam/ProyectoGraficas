@@ -5,10 +5,13 @@
     var renderer = null,
     scene = null,
     camera = null,
-    cube = null,
+    rootNode = null,
     animating = false;
 
     function onLoad() {
+        // x: left - right
+        // y: up - down
+        // z: front - back
         var container = document.getElementById("container");
 
         renderer = new THREE.WebGLRenderer({antialias: true});
@@ -19,24 +22,38 @@
 
         camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight,
                 1, 4000);
-        camera.position.set(0, 0, 3);
+        camera.position.set(0, 5, 7);
+        camera.rotation.x = -Math.PI / 5;
 
         var light = new THREE.DirectionalLight(0xffffff, 1.5);
-        light.position.set(0, 0, 1);
+        light.position.set(0, 3, 1);
         scene.add(light);
 
+        rootNode = new THREE.Object3D();
         /*
         var mapURL = "./tex_img.jpg";
         map = THREE.ImageUtils.loadTexture(mapURL);
         var material = new THREE.MeshPhongMaterial({map: map});
         */
-        var material = new THREE.MeshPhongMaterial({color:0xffffff});
-        var geometry = new THREE.CubeGeometry(1, 1, 1);
-        cube = new THREE.Mesh(geometry, material);
-        cube.rotation.x = Math.PI / 5;
-        cube.rotation.y = Math.PI / 5;
+        var grassMaterial = new THREE.MeshPhongMaterial({color:0x009911});
+        var grassGeometry = new THREE.CubeGeometry(5, 0.1, 5);
+        var grass = new THREE.Mesh(grassGeometry, grassMaterial);
+        grass.position.set(0, 0, 0)
 
-        scene.add(cube);
+        var barnMaterial = new THREE.MeshPhongMaterial({color:0xaa0000});
+        var barnGeometry = new THREE.CubeGeometry(0.5, 0.5, 1);
+        var barn = new THREE.Mesh(barnGeometry, barnMaterial);
+        barn.position.set(0, 0.5, -1)
+
+        var sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        var sphereGeo = new THREE.SphereGeometry(0.2, 32, 32);
+        sun = new THREE.Mesh(sphereGeo, sphereMaterial);
+        sun.position.set(0, 3, 1)
+
+        rootNode.add(grass);
+        rootNode.add(sun);
+        rootNode.add(barn)
+        scene.add(rootNode);
 
         addMouseHandler();
 
@@ -46,7 +63,7 @@
     function run() {
         renderer.render(scene, camera);
         if (animating) {
-            cube.rotation.y -= 0.01
+            rootNode.rotation.y -= 0.01
         }
 
         requestAnimationFrame(run);
