@@ -1,20 +1,71 @@
 <html>
  <head>
+  <script src="./three.min.js"></script>
   <script type="application/javascript">
-    function draw() {
-      var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("3d");
+    var renderer = null,
+    scene = null,
+    camera = null,
+    cube = null,
+    animating = false;
 
-        //Adrian Mancilla U. A0119697
-        //Fernando Carrillo
-        //Jorge Elizondo
-           
-      }
+    function onLoad() {
+        var container = document.getElementById("container");
+
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setSize(container.offsetWidth, container.offsetHeight);
+        container.appendChild(renderer.domElement);
+
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight,
+                1, 4000);
+        camera.position.set(0, 0, 3);
+
+        var light = new THREE.DirectionalLight(0xffffff, 1.5);
+        light.position.set(0, 0, 1);
+        scene.add(light);
+
+        /*
+        var mapURL = "./tex_img.jpg";
+        map = THREE.ImageUtils.loadTexture(mapURL);
+        var material = new THREE.MeshPhongMaterial({map: map});
+        */
+        var material = new THREE.MeshPhongMaterial({color:0xffffff});
+        var geometry = new THREE.CubeGeometry(1, 1, 1);
+        cube = new THREE.Mesh(geometry, material);
+        cube.rotation.x = Math.PI / 5;
+        cube.rotation.y = Math.PI / 5;
+
+        scene.add(cube);
+
+        addMouseHandler();
+
+        run();
     }
+
+    function run() {
+        renderer.render(scene, camera);
+        if (animating) {
+            cube.rotation.y -= 0.01
+        }
+
+        requestAnimationFrame(run);
+    }
+
+    function addMouseHandler() {
+        var dom = renderer.domElement;
+        dom.addEventListener('mouseup', onMouseUp, false);
+    }
+
+    function onMouseUp(event) {
+        event.preventDefault();
+        animating = !animating;
+    }
+
   </script>
  </head>
- <body onload="draw();">
-   <canvas id="canvas" width="500" height="500"></canvas>
+ <body onload="onLoad();">
+    <h1 style="text-align: center;">Final Project</h1>
+    <div id="container" style="width:95%; height:80%; position:absolute"></div>
  </body>
 </html>
