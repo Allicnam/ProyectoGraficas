@@ -1,88 +1,103 @@
 <html>
  <head>
-  <script src="./three.min.js"></script>
-  <script type="application/javascript">
-    var renderer = null,
-    scene = null,
-    camera = null,
-    rootNode = null,
-    animating = false;
-
-    function onLoad() {
-        // x: left - right
-        // y: up - down
-        // z: front - back
-        var container = document.getElementById("container");
-
-        renderer = new THREE.WebGLRenderer({antialias: true});
-        renderer.setSize(container.offsetWidth, container.offsetHeight);
-        container.appendChild(renderer.domElement);
-
-        scene = new THREE.Scene();
-
-        camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight,
-                1, 4000);
-        camera.position.set(0, 5, 7);
-        camera.rotation.x = -Math.PI / 5;
-
-        var light = new THREE.DirectionalLight(0xffffff, 1.5);
-        light.position.set(0, 3, 1);
-        scene.add(light);
-
-        rootNode = new THREE.Object3D();
-        /*
-        var mapURL = "./tex_img.jpg";
-        map = THREE.ImageUtils.loadTexture(mapURL);
-        var material = new THREE.MeshPhongMaterial({map: map});
-        */
-        var grassMaterial = new THREE.MeshPhongMaterial({color:0x009911});
-        var grassGeometry = new THREE.CubeGeometry(5, 0.1, 5);
-        var grass = new THREE.Mesh(grassGeometry, grassMaterial);
-        grass.position.set(0, 0, 0)
-
-        var barnMaterial = new THREE.MeshPhongMaterial({color:0xaa0000});
-        var barnGeometry = new THREE.CubeGeometry(0.5, 0.5, 1);
-        var barn = new THREE.Mesh(barnGeometry, barnMaterial);
-        barn.position.set(0, 0.5, -1)
-
-        var sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-        var sphereGeo = new THREE.SphereGeometry(0.2, 32, 32);
-        sun = new THREE.Mesh(sphereGeo, sphereMaterial);
-        sun.position.set(0, 3, 1)
-
-        rootNode.add(grass);
-        rootNode.add(sun);
-        rootNode.add(barn)
-        scene.add(rootNode);
-
-        addMouseHandler();
-
-        run();
-    }
-
-    function run() {
-        renderer.render(scene, camera);
-        if (animating) {
-            rootNode.rotation.y -= 0.01
-        }
-
-        requestAnimationFrame(run);
-    }
-
-    function addMouseHandler() {
-        var dom = renderer.domElement;
-        dom.addEventListener('mouseup', onMouseUp, false);
-    }
-
-    function onMouseUp(event) {
-        event.preventDefault();
-        animating = !animating;
-    }
-
-  </script>
+     <title>Proyecto final - WebGL</title>  
  </head>
- <body onload="onLoad();">
+ <body>
     <h1 style="text-align: center;">Final Project</h1>
     <div id="container" style="width:95%; height:80%; position:absolute"></div>
+    <script type="module">
+        import * as THREE from './build/three.module.js';
+
+        import { GLTFLoader } from './loaders/GLTFLoader.js';
+
+        var renderer = null,
+        scene = null,
+        camera = null,
+        rootNode = null,
+        animating = false;
+
+        init();
+    
+        function init() {
+            // x: left - right
+            // y: up - down
+            // z: front - back
+            var container = document.getElementById("container");
+    
+            renderer = new THREE.WebGLRenderer({antialias: true});
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            container.appendChild(renderer.domElement);
+    
+            scene = new THREE.Scene();
+    
+            camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight,
+                    1, 4000);
+            camera.position.set(0, 5, 7);
+            camera.rotation.x = -Math.PI / 5;
+    
+            var light = new THREE.DirectionalLight(0xffffff, 1.5);
+            light.position.set(0, 3, 1);
+            scene.add(light);
+    
+            rootNode = new THREE.Object3D();
+            /*
+            var mapURL = "./tex_img.jpg";
+            map = THREE.ImageUtils.loadTexture(mapURL);
+            var material = new THREE.MeshPhongMaterial({map: map});
+            */
+
+            const loader = new GLTFLoader().setPath( 'models/' );
+						loader.load( 'sheep.glb', function ( gltf ) {
+                            let sheepNode = new THREE.Object3D();
+                            sheepNode.add(gltf.scene);
+                            sheepNode.scale.set(0.1, 0.1, 0.1);
+							rootNode.add(sheepNode);
+                        } );
+                        
+            var grassMaterial = new THREE.MeshPhongMaterial({color:0x009911});
+            var grassGeometry = new THREE.CubeGeometry(5, 0.1, 5);
+            var grass = new THREE.Mesh(grassGeometry, grassMaterial);
+            grass.position.set(0, 0, 0)
+    
+            var barnMaterial = new THREE.MeshPhongMaterial({color:0xaa0000});
+            var barnGeometry = new THREE.CubeGeometry(0.5, 0.5, 1);
+            var barn = new THREE.Mesh(barnGeometry, barnMaterial);
+            barn.position.set(0, 0.5, -1)
+    
+            var sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+            var sphereGeo = new THREE.SphereGeometry(0.2, 32, 32);
+            var sun = new THREE.Mesh(sphereGeo, sphereMaterial);
+            sun.position.set(0, 3, 1)
+    
+            rootNode.add(grass);
+            rootNode.add(sun);
+            rootNode.add(barn)
+            scene.add(rootNode);
+    
+            addMouseHandler();
+    
+            run();
+        }
+    
+        function run() {
+            renderer.render(scene, camera);
+            if (animating) {
+                rootNode.rotation.y -= 0.01
+            }
+    
+            requestAnimationFrame(run);
+        }
+    
+        function addMouseHandler() {
+            var dom = renderer.domElement;
+            dom.addEventListener('mouseup', onMouseUp, false);
+        }
+    
+        function onMouseUp(event) {
+            event.preventDefault();
+            animating = !animating;
+        }
+    
+      </script>
  </body>
 </html>
