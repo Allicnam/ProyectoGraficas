@@ -67,6 +67,26 @@
             grass.position.set(0, 0, 0)
             rootNode.add(grass);
 
+            
+            var fenceOne  = drawFence(-1.2,0.3,-1.8);
+            fenceOne.rotation.y = -1.6;
+            for(let i = 0.1; i < 4.2; i += 0.5) {
+                drawFence(2.8,0.3,i);
+            }
+
+            for(let i = -2; i < 3; i += 0.5) {
+                var fence = drawFence(4,0.3,i);
+                fence.rotation.y = -1.6;
+            }
+
+            for(let i = 0.0; i < 4.2; i += 0.5) {
+                drawFence(-2.8,0.3,i);
+            }
+
+            var fenceTwo = drawFence(-1,0.3,2.8);
+            fenceTwo.rotation.y = -1.6;
+           
+        
             var barnMaterial = new THREE.MeshPhongMaterial({color:0xaa0000});
             var barnGeometry = new THREE.CubeGeometry(4, 1, 2);
             var barn = new THREE.Mesh(barnGeometry, barnMaterial);
@@ -123,6 +143,39 @@
         function onMouseUp(event) {
             event.preventDefault();
             animating = !animating;
+        }
+
+        function drawFence(x,y,z) {
+            let group = new THREE.Group();
+            let verticalOneGeo = new THREE.CubeGeometry(0.1,0.5,0.1);
+            let verticalTwoGeo = new THREE.CubeGeometry(0.1,0.5,0.1);
+            let horizontalOneGeo = new THREE.CubeGeometry(0.1,0.1,1);
+            let horizontalTwoGeo = new THREE.CubeGeometry(0.1,0.1,1);
+
+            var bMat = new THREE.MeshPhongMaterial({color:0xE1C6A9});
+
+            let verticalOne = new THREE.Mesh(verticalOneGeo,bMat);
+            let verticalTwo = new THREE.Mesh(verticalTwoGeo,bMat);
+            let horizontalOne = new THREE.Mesh(horizontalOneGeo,bMat);
+            let horizontalTwo = new THREE.Mesh(horizontalTwoGeo,bMat);
+
+            group.add(verticalOne);
+            group.add(horizontalOne);
+            group.add(horizontalTwo);
+            group.add(verticalTwo);
+
+
+            scene.add(group);
+
+            verticalOne.position.set(x, y, z);
+            verticalTwo.position.set(x, y, z-1);
+            horizontalOne.position.set(x, y-0.1, z-0.5);
+            horizontalTwo.position.set(x, y+.1, z-0.5);
+
+        
+            
+            rootNode.add(group);
+            return group;
         }
     
       </script>
