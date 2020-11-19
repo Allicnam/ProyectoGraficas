@@ -73,6 +73,12 @@
             barn.position.set(0, 0.5, -2)
             rootNode.add(barn)
 
+            var haystackMaterial = new THREE.MeshPhongMaterial({color:0x998800});
+            var haystackGeometry = new THREE.CubeGeometry(0.5, 0.5, 0.3);
+            var haystack = new THREE.Mesh(haystackGeometry, haystackMaterial);
+            haystack.position.set(1, 0, -0.5)
+            rootNode.add(haystack)
+
             var sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
             var sphereGeo = new THREE.SphereGeometry(0.4, 32, 32);
             var sun = new THREE.Mesh(sphereGeo, sphereMaterial);
