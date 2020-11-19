@@ -52,6 +52,7 @@
             loadMultipleModels(rootNode, 'Pig.glb', 0.1, [[-1,1], [-2,2], [1, 3]]);
             loadMultipleModels(rootNode, 'Tree.glb', 0.2, [[6,4], [-3,-4], [-3, 4.5]]);
             loadMultipleModels(rootNode, 'Tree3.glb', 0.2, [[-5.5,-4.5], [2.5,-2.5], [3, 4.5]]);
+            loadCloudModels(rootNode, 'cloud.glb', 0.2, [[-5.5,-4.5], [2.5,-2.5], [3, 4.5], [-5, 3.5]]);
             
            /*  loader.load( 'Wolf.glb', function ( gltf ) {
                 let sheepNode = new THREE.Object3D();
@@ -102,6 +103,15 @@
                 let modelNode = loadModel(modelName);
                 modelNode.scale.set(scale, scale, scale);
                 modelNode.position.set(positions[i][0],0,positions[i][1]);
+                rootNode.add(modelNode);
+            }
+        }
+
+        function loadCloudModels(rootNode, modelName, scale, positions) {
+            for (let i = 0; i < positions.length; i++) {
+                let modelNode = loadModel(modelName);
+                modelNode.scale.set(scale, scale, scale);
+                modelNode.position.set(positions[i][0],4,positions[i][1]);
                 rootNode.add(modelNode);
             }
         }
