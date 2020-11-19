@@ -29,13 +29,14 @@
             container.appendChild(renderer.domElement);
     
             scene = new THREE.Scene();
-    
+            scene.background = new THREE.Color( 0x8fbfff );
+
             camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight,
                     1, 4000);
             camera.position.set(0, 5, 7);
             camera.rotation.x = -Math.PI / 5;
     
-            var light = new THREE.DirectionalLight(0xffffff, 1.5);
+            var light = new THREE.DirectionalLight(0xffffff, 2.5);
             light.position.set(0, 3, 1);
             scene.add(light);
     
@@ -47,15 +48,97 @@
             */
 
             const loader = new GLTFLoader().setPath( 'models/' );
-						loader.load( 'sheep.glb', function ( gltf ) {
-                            let sheepNode = new THREE.Object3D();
-                            sheepNode.add(gltf.scene);
-                            sheepNode.scale.set(0.1, 0.1, 0.1);
-							rootNode.add(sheepNode);
-                        } );
-                        
+            
+            loader.load( 'sheep.glb', function ( gltf ) {
+                let sheepNode = new THREE.Object3D();
+                sheepNode.add(gltf.scene);
+                sheepNode.scale.set(0.1, 0.1, 0.1);
+                sheepNode.position.set(1,0,1);
+                rootNode.add(sheepNode);
+            } );
+            
+            loader.load( 'sheep.glb', function ( gltf ) {
+                let sheepNode = new THREE.Object3D();
+                sheepNode.add(gltf.scene);
+                sheepNode.scale.set(0.1, 0.1, 0.1);
+                sheepNode.position.set(2,0, 2.5);
+                rootNode.add(sheepNode);
+            } );
+
+            loader.load( 'sheep.glb', function ( gltf ) {
+                let sheepNode = new THREE.Object3D();
+                sheepNode.add(gltf.scene);
+                sheepNode.scale.set(0.1, 0.1, 0.1);
+                sheepNode.position.set(3,0,-2);
+                rootNode.add(sheepNode);
+            } );
+
+            loader.load( 'sheep.glb', function ( gltf ) {
+                let sheepNode = new THREE.Object3D();
+                sheepNode.add(gltf.scene);
+                sheepNode.scale.set(0.1, 0.1, 0.1);
+                sheepNode.position.set(-1,0,0);
+                rootNode.add(sheepNode);
+            } );
+            
+           /*  loader.load( 'Wolf.glb', function ( gltf ) {
+                let sheepNode = new THREE.Object3D();
+                sheepNode.add(gltf.scene);
+                sheepNode.scale.set(0.1, 0.1, 0.1);
+                sheepNode.position.set(2,0.5,0);
+                rootNode.add(sheepNode);
+            } ); */
+
+            loader.load( 'Tree.glb', function ( gltf ) {
+                let treeNode = new THREE.Object3D();
+                treeNode.add(gltf.scene);
+                treeNode.scale.set(0.2, 0.2, 0.2);
+                treeNode.position.set(6,0,4);
+                rootNode.add(treeNode);
+            } );
+
+            loader.load( 'Tree.glb', function ( gltf ) {
+                let treeNode = new THREE.Object3D();
+                treeNode.add(gltf.scene);
+                treeNode.scale.set(0.2, 0.2, 0.2);
+                treeNode.position.set(-3,0,-4);
+                rootNode.add(treeNode);
+            } );
+
+            loader.load( 'Tree.glb', function ( gltf ) {
+                let treeNode = new THREE.Object3D();
+                treeNode.add(gltf.scene);
+                treeNode.scale.set(0.2, 0.2, 0.2);
+                treeNode.position.set(-3,0,4.5);
+                rootNode.add(treeNode);
+            } );
+
+            loader.load( 'Tree3.glb', function ( gltf ) {
+                let treeNode = new THREE.Object3D();
+                treeNode.add(gltf.scene);
+                treeNode.scale.set(0.2, 0.2, 0.2);
+                treeNode.position.set(2.5,0,-2.5);
+                rootNode.add(treeNode);
+            } );
+
+            loader.load( 'Tree3.glb', function ( gltf ) {
+                let treeNode = new THREE.Object3D();
+                treeNode.add(gltf.scene);
+                treeNode.scale.set(0.2, 0.2, 0.2);
+                treeNode.position.set(-5.5,0,-4.5);
+                rootNode.add(treeNode);
+            } );
+
+            loader.load( 'Tree.glb', function ( gltf ) {
+                let treeNode = new THREE.Object3D();
+                treeNode.add(gltf.scene);
+                treeNode.scale.set(0.2, 0.2, 0.2);
+                treeNode.position.set(5.5,0,-4.5);
+                rootNode.add(treeNode);
+            } );
+
             var grassMaterial = new THREE.MeshPhongMaterial({color:0x009911});
-            var grassGeometry = new THREE.CubeGeometry(5, 0.1, 5);
+            var grassGeometry = new THREE.CubeGeometry(15, 0.1, 15);
             var grass = new THREE.Mesh(grassGeometry, grassMaterial);
             grass.position.set(0, 0, 0)
     
@@ -78,7 +161,7 @@
     
             run();
         }
-    
+        
         function run() {
             renderer.render(scene, camera);
             if (animating) {
