@@ -16,6 +16,8 @@
         rootNode = null,
         animating = false;
 
+        var cloudsArr = [];
+
         init();
     
         function init() {
@@ -133,6 +135,7 @@
                 let modelNode = loadModel(modelName);
                 modelNode.scale.set(scale, scale, scale);
                 modelNode.position.set(positions[i][0],0,positions[i][1]);
+                modelNode.castShadow = true;
                 rootNode.add(modelNode);
             }
         }
@@ -149,7 +152,8 @@
             for (let i = 0; i < positions.length; i++) {
                 let modelNode = loadModel(modelName);
                 modelNode.scale.set(scale, scale, scale);
-                modelNode.position.set(positions[i][0],4,positions[i][1]);
+                modelNode.position.set(positions[i][0],1.5,positions[i][1]);
+                cloudsArr.push(modelNode);
                 rootNode.add(modelNode);
             }
         }
@@ -157,7 +161,11 @@
         function run() {
             renderer.render(scene, camera);
             if (animating) {
-                rootNode.rotation.y -= 0.01
+                //rootNode.rotation.y -= 0.01
+                // Move clouds
+                for (var i = 0; i < cloudsArr.length; i++){
+                    moveCloud(cloudsArr[i]);
+                }
             }
     
             requestAnimationFrame(run);
@@ -171,6 +179,22 @@
         function onMouseUp(event) {
             event.preventDefault();
             animating = !animating;
+        }
+
+        // Move cloud in x axis
+        function moveCloud(cloudModel) {
+
+            let minX = -20
+            let maxX = 20
+            let moveSpeed = 0.01;
+
+            let pos = new THREE.Vector3();
+            cloudModel.getWorldPosition(pos);
+            let new_pos = pos.x + moveSpeed;
+            if (new_pos > maxX){
+                new_pos = minX
+            }
+            cloudModel.position.set(new_pos, pos.y, pos.z);
         }
 
         function drawFence(x,y,z) {
