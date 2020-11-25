@@ -10,9 +10,12 @@
 
         import { GLTFLoader } from './loaders/GLTFLoader.js';
 
+        import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
+
         var renderer = null,
         scene = null,
         camera = null,
+        controls = null,
         rootNode = null,
         animating = false;
 
@@ -39,6 +42,9 @@
                     1, 4000);
             camera.position.set(0, 9, 14);
             camera.rotation.x = -Math.PI / 5;
+
+            controls = new OrbitControls(camera,renderer.domElement);
+            document.addEventListener("keydown", setupKeyControls, false);
             
             rootNode = new THREE.Object3D();
 
@@ -121,9 +127,7 @@
             rootNode.add(sun);
             
             scene.add(rootNode);
-    
-            addMouseHandler();
-    
+            
             run();
         }
 
@@ -207,15 +211,15 @@
     
             requestAnimationFrame(run);
         }
-    
-        function addMouseHandler() {
-            var dom = renderer.domElement;
-            dom.addEventListener('mouseup', onMouseUp, false);
-        }
-    
-        function onMouseUp(event) {
-            event.preventDefault();
-            animating = !animating;
+
+        function setupKeyControls() {
+            document.onkeydown = function(e) {
+                switch (e.keyCode) {
+                    case 65:
+                        animating = !animating;
+                        break;
+                }
+            };
         }
 
         // Move cloud in x axis
@@ -235,6 +239,7 @@
 
         function animate() {
             requestAnimationFrame( animate );
+            controls.update();
             const delta = clock.getDelta();
             if (animating) {
                 for (let i = 0; i < mixers.length; i++) {
