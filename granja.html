@@ -12,6 +12,7 @@
         import * as THREE from './build/three.module.js';
 
         import { GLTFLoader } from './loaders/GLTFLoader.js';
+        import { ColladaLoader } from './loaders/ColladaLoader.js';
 
         import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 
@@ -60,12 +61,12 @@
             rootNode.add(light);
 
             //loadMultipleModels(rootNode, 'Sheep.glb', 0.1, [[1,2], [2,2], [-1, 3]]);
-            loadMultipleModelsWithAnimation(sheepFlock, 'SheepWalking.glb', 0.1, [[0.5,0,0], [0,1,0], [1,1,0]]);
+            loadMultipleModelsWithAnimation_dae(sheepFlock, 'sheepWalking.dae', 0.1, [[0.5,0,0], [0,1,0], [1,1,0]]);
             sheepFlock.position.set(4,0,-4);  // starting position
             rootNode.add(sheepFlock);
 
             // Pigs eating from Haystacks
-            loadMultipleModelsWithAnimation(rootNode, 'PigEating.glb', 0.1,
+            loadMultipleModelsWithAnimation_dae(rootNode, 'pigEating.dae', 0.1,
                 [[-1,0, -3], [-1.5,0, -3.3], [1, 0, -3.1], [1.5, 0, -3.0], [-0.4, -0.4, -1.6]]);
             loadMultipleModels(rootNode, 'Tree.glb', 0.2,
                 [[6,6], [-5,-4], [-6, 7.5],
@@ -164,6 +165,32 @@
             return modelNode;
         }
 
+        function loadModelWithAnimation_dae(modelName) {
+            const loader = new ColladaLoader();
+            let modelNode = new THREE.Object3D();
+            
+			loader.load( './models/' + modelName, function ( collada ) {
+                const animations = collada.animations;
+				let model = collada.scene;
+				model.traverse( function ( child ) {
+					if ( child.isMesh ) {
+						// model does not have normals
+						//child.material.flatShading = true;
+					}
+                } );
+
+                modelNode.add(model);
+
+                let model_mixer = new THREE.AnimationMixer( model );
+				model_mixer.clipAction( animations[ 0 ] ).play();
+                mixers.push(model_mixer)
+
+                animate();
+            } );
+            
+            return modelNode;
+        }
+
         function loadMultipleModels(rootNode, modelName, scale, positions) {
             for (let i = 0; i < positions.length; i++) {
                 let modelNode = loadModel(modelName);
@@ -177,6 +204,17 @@
             // transform [ x, z, rotation ]
             for (let i = 0; i < transforms.length; i++) {
                 let modelNode = loadModelWithAnimation(modelName);
+                modelNode.scale.set(scale, scale, scale);
+                modelNode.rotation.y = transforms[i][2];
+                modelNode.position.set(transforms[i][0],0,transforms[i][1]);
+                rootNode.add(modelNode);
+            }
+        }
+
+        function loadMultipleModelsWithAnimation_dae(rootNode, modelName, scale, transforms) {
+            // transform [ x, z, rotation ]
+            for (let i = 0; i < transforms.length; i++) {
+                let modelNode = loadModelWithAnimation_dae(modelName);
                 modelNode.scale.set(scale, scale, scale);
                 modelNode.rotation.y = transforms[i][2];
                 modelNode.position.set(transforms[i][0],0,transforms[i][1]);
@@ -252,8 +290,8 @@
 
         // Move sheep in rectangle
         function moveSheep() {
-            let moveSpeed = 0.01;
-            let corners = [[4, -4], [4, 4], [-4, 4], [-4, -4]];
+            let moveSpeed = 0.008;
+            let corners = [[4, -5], [4, 5], [-4, 5], [-4, -5]];
             let currPos = new THREE.Vector3();
             sheepFlock.getWorldPosition(currPos);
 
