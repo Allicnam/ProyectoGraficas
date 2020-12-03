@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.90.1 commit date:2020-09-23, commit time:06:43, hash:3e85bb34d0d7</authoring_tool>
     </contributor>
-    <created>2020-12-02T19:03:17</created>
-    <modified>2020-12-02T19:03:17</modified>
+    <created>2020-12-02T19:18:34</created>
+    <modified>2020-12-02T19:18:34</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -19,7 +19,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <color sid="diffuse">0.8 0.8 0.8 1</color>
+              <color sid="diffuse">0.02291475 0.2461975 0.0229432 1</color>
             </diffuse>
             <reflectivity>
               <float sid="specular">0.5</float>
@@ -36,7 +36,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <color sid="diffuse">0.8 0.8 0.8 1</color>
+              <color sid="diffuse">0.09850585 0.0236712 0.003763567 1</color>
             </diffuse>
             <reflectivity>
               <float sid="specular">0.5</float>
@@ -97,7 +97,7 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="Icosphere" name="Icosphere" type="NODE">
-        <matrix sid="transform">4.307059 0 0 0 0 4.307059 0 0 0 0 4.307059 4.219289 0 0 0 1</matrix>
+        <matrix sid="transform">4.307059 0 0 0 0 4.307059 0 0 0 0 4.307059 0.6563188 0 0 0 1</matrix>
         <instance_geometry url="#Icosphere-mesh" name="Icosphere">
           <bind_material>
             <technique_common>
