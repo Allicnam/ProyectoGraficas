@@ -68,15 +68,15 @@
             // Pigs eating from Haystacks
             loadMultipleModelsWithAnimation_dae(rootNode, 'pigEating.dae', 0.1,
                 [[-1,0, -3], [-1.5,0, -3.3], [1, 0, -3.1], [1.5, 0, -3.0], [-0.4, -0.4, -1.6]]);
-            loadMultipleModels(rootNode, 'Tree.glb', 0.2,
+            loadMultipleModels(rootNode, 'Tree.dae', 0.2,
                 [[6,6], [-5,-4], [-6, 7.5],
                 [6,-6], [5,4], [-8, 5.5],[7, 0],
                 [-5, 0.5], [-7, -2], [8, -1]]);
-            loadMultipleModels(rootNode, 'Tree3.glb', 0.2,
+            loadMultipleModels(rootNode, 'Tree3.dae', 0.2,
                 [[-7.5,-5.5], [4.5,-3.5], [3, 5.5],
                 [5,8], [7,-7], [8, 7.5], [-7, 3], [-2, -8],
                 [0, -6], [2, -7]]);
-            loadCloudModels(rootNode, 'cloud.glb', 0.2, [[-5.5,-4.5], [6.5,-2.5], [1, 5], [-10, 3.5], [-10, -12],
+            loadCloudModels(rootNode, 'cloud.dae', 0.04, [[-5.5,-4.5], [6.5,-2.5], [1, 5], [-10, 3.5], [-10, -12],
                                                         [2, -9], [3, -9], [-6.5,-4.0], [5, -14], [-16, 0], [-18, -4]]);
             
            /*  loader.load( 'Wolf.glb', function ( gltf ) {
@@ -87,7 +87,7 @@
                 rootNode.add(sheepNode);
             } ); */
 
-            var grassMaterial = new THREE.MeshPhongMaterial({color:0x009911});
+            var grassMaterial = new THREE.MeshPhongMaterial({color:0x008522});
             var grassGeometry = new THREE.CubeGeometry(20, 100, 20);
             var grass = new THREE.Mesh(grassGeometry, grassMaterial);
             grass.position.set(0, -50, 0)
@@ -137,15 +137,15 @@
             run();
         }
 
-        function loadModel(modelName) {
-            const loader = new GLTFLoader().setPath( 'models/' );
+        function loadModel_dae(modelName) {
+            const loader = new ColladaLoader();
             let modelNode = new THREE.Object3D();
-
-            loader.load( modelName, function ( gltf ) {
-                let model = gltf.scene;
+            
+			loader.load( './models/' + modelName, function ( collada ) {
+				let model = collada.scene;
                 modelNode.add(model);
             } );
-
+            
             return modelNode;
         }
 
@@ -193,7 +193,7 @@
 
         function loadMultipleModels(rootNode, modelName, scale, positions) {
             for (let i = 0; i < positions.length; i++) {
-                let modelNode = loadModel(modelName);
+                let modelNode = loadModel_dae(modelName);
                 modelNode.scale.set(scale, scale, scale);
                 modelNode.position.set(positions[i][0],0,positions[i][1]);
                 rootNode.add(modelNode);
@@ -232,7 +232,7 @@
 
         function loadCloudModels(rootNode, modelName, scale, positions) {
             for (let i = 0; i < positions.length; i++) {
-                let modelNode = loadModel(modelName);
+                let modelNode = loadModel_dae(modelName);
                 modelNode.scale.set(scale, scale, scale);
                 modelNode.position.set(positions[i][0],3.5,positions[i][1]);
                 modelNode.rotation.y = -1.6;
@@ -277,7 +277,7 @@
         function moveCloud(cloudModel) {
             let minX = -18
             let maxX = 18
-            let moveSpeed = 0.01;
+            let moveSpeed = 0.002;
 
             let pos = new THREE.Vector3();
             cloudModel.getWorldPosition(pos);

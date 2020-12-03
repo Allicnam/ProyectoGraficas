@@ -3,10 +3,10 @@
   <asset>
     <contributor>
       <author>Blender User</author>
-      <authoring_tool>Blender 2.81.16 commit date:2019-12-04, commit time:11:32, hash:f1aa4d18d49d</authoring_tool>
+      <authoring_tool>Blender 2.90.1 commit date:2020-09-23, commit time:06:43, hash:3e85bb34d0d7</authoring_tool>
     </contributor>
-    <created>2020-12-02T18:51:09</created>
-    <modified>2020-12-02T18:51:09</modified>
+    <created>2020-12-02T19:02:18</created>
+    <modified>2020-12-02T19:02:18</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -19,7 +19,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <color sid="diffuse">0.8 0.8 0.8 1</color>
+              <color sid="diffuse">0.07227185 0.2015563 0.04970657 1</color>
             </diffuse>
             <reflectivity>
               <float sid="specular">0.5</float>
@@ -36,7 +36,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <color sid="diffuse">0.8 0.8 0.8 1</color>
+              <color sid="diffuse">0.07618538 0.03071345 0.01032982 1</color>
             </diffuse>
             <reflectivity>
               <float sid="specular">0.5</float>
